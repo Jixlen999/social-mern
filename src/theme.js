@@ -1,0 +1,21 @@
+export const theme = {
+	colors: {
+		white: '#fff',
+		searchIconBg: 'linear-gradient(106.23deg, #f99827, #f95f35 100%)',
+		bgColor: '#f3f3f3',
+		yellow: '#f5c32c',
+		blue: '#a6ddf0',
+		orange: '#fca61f',
+		black: '#242d49',
+		gray: 'rgba(36, 45, 73, 0.65)',
+		hrColor: '#cfcdcd',
+		cardColor: 'rgba(255, 255, 255, 0.64)',
+		inputColor: 'rgba(40, 52, 62, 0.07)',
+		photo: '#4CB256',
+		video: '#4A4EB7',
+		location: '#EF5757',
+		schedule: '#E1AE4A',
+		buttonBg: 'linear-gradient(98.63deg, #f9a225 0%, #f95f35 100%)',
+	},
+	profileShadow: '0px 4px 17px 2px rgba(0, 0, 0, 0.25)',
+};
