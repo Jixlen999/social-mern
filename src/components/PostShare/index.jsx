@@ -6,7 +6,9 @@ import {
 	UilTimes,
 } from '@iconscout/react-unicons';
 import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { uploadImage, uploadPost } from '@/actions/UploadAction';
 import ProfileImage from '@/assets/profileImg.jpg';
 
 import {
@@ -27,12 +29,17 @@ import {
 } from './styled';
 
 function PostShare() {
+	const loading = useSelector((state) => state.postReducer.uploading);
 	const [imageUrl, setImageUrl] = useState(null);
 	const imageRef = useRef();
+	const descriptionRef = useRef();
+	const { user } = useSelector((state) => state.authReducer.authData);
+	const dispatch = useDispatch();
 
 	const handleImageChange = ({ target }) => {
 		if (target.files && target.files[0]) {
-			setImageUrl(URL.createObjectURL(target.files[0]));
+			const image = target.files[0];
+			setImageUrl(image);
 		}
 	};
 
@@ -44,11 +51,43 @@ function PostShare() {
 		setImageUrl(null);
 	};
 
+	const resetForm = () => {
+		setImageUrl(null);
+		descriptionRef.current.value = null;
+	};
+
+	const handleShareClick = (event) => {
+		event.preventDefault();
+		const newPost = {
+			userId: user._id,
+			description: descriptionRef.current.value,
+		};
+		if (imageUrl) {
+			const data = new FormData();
+			const fileName = Date.now() + imageUrl.name;
+			data.append('name', fileName);
+			data.append('file', imageUrl);
+			newPost.image = fileName;
+			try {
+				dispatch(uploadImage(data));
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		dispatch(uploadPost(newPost));
+		resetForm();
+	};
+
 	return (
 		<PostShareWrapper>
 			<Image src={ProfileImage} alt="Post share" />
 			<InputAndOptionsWrapper>
-				<Input type="text" placeholder="What's happening" />
+				<Input
+					type="text"
+					placeholder="What's happening"
+					ref={descriptionRef}
+					required
+				/>
 				<PostOptions>
 					<Photo>
 						<Option onClick={clickHandler}>
@@ -74,7 +113,9 @@ function PostShare() {
 							Schedule
 						</Option>
 					</Schedule>
-					<StyledButton>Share</StyledButton>
+					<StyledButton onClick={handleShareClick} disabled={loading}>
+						{loading ? 'Uploading' : 'Share'}
+					</StyledButton>
 					<ImageWrapper>
 						<input
 							type="file"
@@ -87,7 +128,10 @@ function PostShare() {
 				{imageUrl && (
 					<PreviewImage>
 						<UilTimes onClick={handleImageClose} />
-						<ChosenImage src={imageUrl} alt="chosen image" />
+						<ChosenImage
+							src={URL.createObjectURL(imageUrl)}
+							alt="chosen image"
+						/>
 					</PreviewImage>
 				)}
 			</InputAndOptionsWrapper>
