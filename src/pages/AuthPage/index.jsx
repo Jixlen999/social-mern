@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { logIn, signUp } from '@/actions/AuthAction';
 import Logo from '@/assets/logo.png';
@@ -20,6 +21,8 @@ import {
 } from './styled';
 
 function AuthPage() {
+	const dispatch = useDispatch();
+	const loading = useSelector((state) => state.authReducer.loading);
 	const [isSignUp, setIsSignUp] = useState(true);
 	const initialFormValues = {
 		userName: '',
@@ -30,7 +33,6 @@ function AuthPage() {
 	};
 	const [data, setData] = useState(initialFormValues);
 	const [confirmPass, setConfirmPass] = useState(true);
-	const dispatch = useDispatch();
 
 	const handleChange = ({ target }) => {
 		setData({ ...data, [target.name]: target.value });
@@ -132,9 +134,8 @@ function AuthPage() {
 								: "Don't have an account? Sign up!"}
 						</Hint>
 					</div>
-					<StyledButton type="submit">
-						{' '}
-						{isSignUp ? 'Sign up' : 'Log in'}
+					<StyledButton type="submit" disabled={loading}>
+						{loading ? 'Loading..' : isSignUp ? 'Sign up' : 'Log in'}
 					</StyledButton>
 				</AuthForm>
 			</AuthRight>

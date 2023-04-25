@@ -16,4 +16,9 @@ export const ButtonWrapper = styled.button`
 		background: transparent;
 		border: 2px solid ${({ theme }) => theme.colors.orange};
 	}
+	&:disabled {
+		border: none;
+		background: silver;
+		pointer-events: none;
+	}
 `;
