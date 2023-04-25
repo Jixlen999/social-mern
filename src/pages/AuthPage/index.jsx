@@ -1,7 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
+import { logIn, signUp } from '@/actions/AuthAction';
 import Logo from '@/assets/logo.png';
 
 import {
@@ -10,8 +10,8 @@ import {
 	AuthLeft,
 	AuthRight,
 	AuthWrapper,
-	LoginHint,
-	LoginRight,
+	ConfirmError,
+	Hint,
 	LogoDescription,
 	LogoText,
 	StyledButton,
@@ -20,6 +20,49 @@ import {
 } from './styled';
 
 function AuthPage() {
+	const [isSignUp, setIsSignUp] = useState(true);
+	const initialFormValues = {
+		userName: '',
+		firstName: '',
+		lastName: '',
+		password: '',
+		confirmPass: '',
+	};
+	const [data, setData] = useState(initialFormValues);
+	const [confirmPass, setConfirmPass] = useState(true);
+	const dispatch = useDispatch();
+
+	const handleChange = ({ target }) => {
+		setData({ ...data, [target.name]: target.value });
+		if (target.name === 'confirmPass') {
+			setConfirmPass(true);
+		}
+	};
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
+
+		if (isSignUp) {
+			if (data.password === data.confirmPass) {
+				dispatch(signUp(data));
+			} else {
+				setConfirmPass(false);
+			}
+		} else {
+			dispatch(logIn(data));
+		}
+	};
+
+	const resetForm = () => {
+		setConfirmPass(true);
+		setData(initialFormValues);
+	};
+
+	const handleClick = () => {
+		setIsSignUp((prev) => !prev);
+		resetForm();
+	};
+
 	return (
 		<AuthWrapper>
 			<AuthLeft>
@@ -31,61 +74,71 @@ function AuthPage() {
 					</LogoDescription>
 				</WebName>
 			</AuthLeft>
-			{/* <SignUp /> */}
-			<LigIn />
+			<AuthRight>
+				<AuthForm onSubmit={handleSubmit}>
+					<h3>{isSignUp ? 'Sign Up' : 'Log in'}</h3>
+					{isSignUp && (
+						<div>
+							<AuthInput
+								type="text"
+								name="firstName"
+								placeholder="First Name"
+								onChange={handleChange}
+								value={data.firstName}
+							/>
+							<AuthInput
+								type="text"
+								name="lastName"
+								placeholder="Last Name"
+								onChange={handleChange}
+								value={data.lastName}
+							/>
+						</div>
+					)}
+					<div>
+						<AuthInput
+							type="text"
+							name="userName"
+							placeholder="User Name"
+							onChange={handleChange}
+							value={data.userName}
+						/>
+					</div>
+					<div>
+						<AuthInput
+							type="password"
+							name="password"
+							placeholder="Password"
+							onChange={handleChange}
+							value={data.password}
+						/>
+						{isSignUp && (
+							<AuthInput
+								type="password"
+								name="confirmPass"
+								placeholder="Confirm Password"
+								onChange={handleChange}
+								value={data.confirmPass}
+							/>
+						)}
+					</div>
+					{isSignUp && !confirmPass && (
+						<ConfirmError>* Confirm Password is not the same</ConfirmError>
+					)}
+					<div>
+						<Hint onClick={handleClick}>
+							{isSignUp
+								? 'Already have an account? Log in!'
+								: "Don't have an account? Sign up!"}
+						</Hint>
+					</div>
+					<StyledButton type="submit">
+						{' '}
+						{isSignUp ? 'Sign up' : 'Log in'}
+					</StyledButton>
+				</AuthForm>
+			</AuthRight>
 		</AuthWrapper>
-	);
-}
-
-function SignUp() {
-	return (
-		<AuthRight>
-			<AuthForm>
-				<h3>Sign Up</h3>
-				<div>
-					<AuthInput type="text" name="firstName" placeholder="First Name" />
-					<AuthInput type="text" name="lastName" placeholder="Last Name" />
-				</div>
-				<div>
-					<AuthInput type="text" name="userName" placeholder="User Name" />
-				</div>
-				<div>
-					<AuthInput type="password" name="password" placeholder="Password" />
-					<AuthInput
-						type="password"
-						name="confirmPass"
-						placeholder="Confirm Password"
-					/>
-				</div>
-				<div>
-					<LoginHint>Already have an account? Log in</LoginHint>
-				</div>
-
-				<StyledButton type="submit">Sign up</StyledButton>
-			</AuthForm>
-		</AuthRight>
-	);
-}
-
-function LigIn() {
-	return (
-		<LoginRight>
-			<AuthForm>
-				<h3>Log in</h3>
-				<div>
-					<AuthInput type="text" name="userName" placeholder="User Name" />
-				</div>
-				<div>
-					<AuthInput type="password" name="password" placeholder="Password" />
-				</div>
-
-				<div>
-					<LoginHint>Don't have an account? Sign in</LoginHint>
-				</div>
-
-				<StyledButton type="submit">Log in</StyledButton>
-			</AuthForm>
-		</LoginRight>
 	);
 }
 

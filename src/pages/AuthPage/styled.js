@@ -38,8 +38,7 @@ export const LogoDescription = styled.h6`
 	font-size: 0.85rem;
 `;
 
-export const AuthRight = styled.div``;
-export const LoginRight = styled.div`
+export const AuthRight = styled.div`
 	width: auto;
 	min-width: 400px;
 `;
@@ -78,6 +77,18 @@ export const StyledButton = styled(Button)`
 	align-self: flex-end;
 `;
 
-export const LoginHint = styled.span`
+export const Hint = styled.span`
+	font-size: 15px;
+	cursor: pointer;
+	color: ${({ theme }) => theme.colors.orange};
+	&:hover {
+		text-decoration: underline;
+	}
+`;
+
+export const ConfirmError = styled.span`
+	color: red;
 	font-size: 12px;
+	align-self: flex-end;
+	margin-right: 5px;
 `;

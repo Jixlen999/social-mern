@@ -11,8 +11,8 @@ function App() {
 			<FirstBlur />
 			<SecondBlur />
 			{/* <HomePage /> */}
-			<ProfilePage />
-			{/* <AuthPage /> */}
+			{/* <ProfilePage /> */}
+			<AuthPage />
 		</AppWrapper>
 	);
 }

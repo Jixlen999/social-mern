@@ -29,6 +29,7 @@
 		"react/display-name": "off",
 		"prefer-destructuring": "off",
 		"import/no-cycle": "off",
+		"default-param-last": "off",
 		"import/order": [
 			"error",
 			{
@@ -61,8 +62,8 @@
 					["@/public", "./public"],
 					["@/src", "./src"],
 					["@/components", "./src/components"],
-					["@/context", "./src/context"],
-					["@/layouts", "./src/layouts"],
+					["@/actions", "./src/actions"],
+					["@/api", "./src/api"],
 					["@/pages", "./src/pages"],
 					["@/theme", "./src/theme"],
 					["@/fields", "./src/fields"],
