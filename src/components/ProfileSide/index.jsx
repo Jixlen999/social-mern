@@ -10,7 +10,7 @@ function ProfileSide() {
 	return (
 		<ProfileWrapper>
 			<LogoSearch />
-			<ProfileCard />
+			<ProfileCard location="homePage" />
 			<FollowersCard />
 		</ProfileWrapper>
 	);

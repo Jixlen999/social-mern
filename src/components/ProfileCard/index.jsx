@@ -1,7 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
-
-import Cover from '@/assets/cover.png';
-import Profile from '@/assets/profileImg.jpg';
+import { useSelector } from 'react-redux';
 
 import {
 	Amount,
@@ -18,39 +17,68 @@ import {
 	ProfileImage,
 	ProfileImages,
 	ProfileTitle,
+	StyledLink,
 	VerticalLine,
 } from './styled';
 
-function ProfileCard() {
-	const isProfilePage = true;
+function ProfileCard({ location }) {
+	const { user } = useSelector((state) => state.authReducer.authData);
+	const {
+		_id,
+		firstName,
+		lastName,
+		coverPicture,
+		profilePicture,
+		following,
+		followers,
+		worksAt,
+	} = user;
+	const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+	const posts = useSelector((state) => state.postReducer.posts);
 
 	return (
 		<ProfileCardWrapper>
 			<ProfileImages>
-				<ProfileCover src={Cover} alt="profile cover" />
-				<ProfileImage src={Profile} alt="profile" />
+				<ProfileCover
+					src={
+						coverPicture
+							? serverPublic + coverPicture
+							: `${serverPublic}defaultCover.jpg`
+					}
+					alt="profile cover"
+				/>
+				<ProfileImage
+					src={
+						profilePicture
+							? serverPublic + profilePicture
+							: `${serverPublic}defaultImage.jpg`
+					}
+					alt="profile"
+				/>
 			</ProfileImages>
 			<ProfileTitle>
-				<Name>Emily JX</Name>
-				<Position>Senior Fullstack Engineer</Position>
+				<Name>{`${firstName} ${lastName}`}</Name>
+				<Position>{worksAt || 'Write about yourself'}</Position>
 			</ProfileTitle>
 			<FollowStatus>
 				<HorizontalLine />
 				<FollowWrapper>
 					<Follow>
-						<Amount>8,675</Amount>
-						<AmountOf>Followings</AmountOf>
+						<Amount>{following.length}</Amount>
+						<AmountOf>Following</AmountOf>
 					</Follow>
 					<VerticalLine />
 					<Follow>
-						<Amount>1</Amount>
+						<Amount>{followers.length}</Amount>
 						<AmountOf>Followers</AmountOf>
 					</Follow>
-					{isProfilePage && (
+					{location === 'profilePage' && (
 						<>
 							<VerticalLine />
 							<Follow>
-								<Amount>3</Amount>
+								<Amount>
+									{posts.filter((post) => post.userId === user._id).length}
+								</Amount>
 								<AmountOf>Posts</AmountOf>
 							</Follow>
 						</>
@@ -58,7 +86,11 @@ function ProfileCard() {
 				</FollowWrapper>
 				<HorizontalLine />
 			</FollowStatus>
-			{!isProfilePage && <MyProfile>My Profile</MyProfile>}
+			{location !== 'profilePage' && (
+				<MyProfile>
+					<StyledLink to={`/profile/${_id}`}>My Profile</StyledLink>
+				</MyProfile>
+			)}
 		</ProfileCardWrapper>
 	);
 }

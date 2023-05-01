@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ProfileCardWrapper = styled.div`
@@ -89,4 +90,9 @@ export const MyProfile = styled.span`
 	align-self: center;
 	margin-bottom: 1rem;
 	cursor: pointer;
+`;
+
+export const StyledLink = styled(Link)`
+	text-decoration: none;
+	color: inherit;
 `;

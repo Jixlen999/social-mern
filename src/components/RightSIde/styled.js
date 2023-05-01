@@ -12,8 +12,8 @@ export const NavIcons = styled.div`
 	justify-content: space-between;
 `;
 export const Icon = styled.img`
-	width: 1.3rem;
-	height: 1.3rem;
+	width: 1.5rem;
+	height: 1.5rem;
 `;
 
 export const StyledButton = styled(Button)`

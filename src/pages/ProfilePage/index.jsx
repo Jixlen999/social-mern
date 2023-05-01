@@ -12,7 +12,7 @@ function ProfilePage() {
 		<ProfileWrapper>
 			<ProfileLeft />
 			<ProfileCenter>
-				<ProfileCard />
+				<ProfileCard location="profilePage" />
 				<PostSide />
 			</ProfileCenter>
 			<RightSide />

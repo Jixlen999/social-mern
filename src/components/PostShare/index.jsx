@@ -9,7 +9,6 @@ import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { uploadImage, uploadPost } from '@/actions/UploadAction';
-import ProfileImage from '@/assets/profileImg.jpg';
 
 import {
 	ChosenImage,
@@ -35,6 +34,7 @@ function PostShare() {
 	const descriptionRef = useRef();
 	const { user } = useSelector((state) => state.authReducer.authData);
 	const dispatch = useDispatch();
+	const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 
 	const handleImageChange = ({ target }) => {
 		if (target.files && target.files[0]) {
@@ -74,13 +74,22 @@ function PostShare() {
 				console.log(error);
 			}
 		}
-		dispatch(uploadPost(newPost));
-		resetForm();
+		if (newPost.description || newPost.image) {
+			dispatch(uploadPost(newPost));
+			resetForm();
+		}
 	};
 
 	return (
 		<PostShareWrapper>
-			<Image src={ProfileImage} alt="Post share" />
+			<Image
+				src={
+					user.profilePicture
+						? serverPublic + user.profilePicture
+						: `${serverPublic}defaultImage.jpg`
+				}
+				alt="Post share"
+			/>
 			<InputAndOptionsWrapper>
 				<Input
 					type="text"

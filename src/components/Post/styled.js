@@ -13,6 +13,9 @@ export const PostReact = styled.div`
 	display: flex;
 	align-items: flex-start;
 	gap: 1.5rem;
+	img {
+		cursor: pointer;
+	}
 `;
 
 export const Details = styled.div``;

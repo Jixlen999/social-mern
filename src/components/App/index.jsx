@@ -35,6 +35,10 @@ function App() {
 							path="/auth"
 							element={user ? <Navigate to="../home" /> : <AuthPage />}
 						/>
+						<Route
+							path="/profile/:id"
+							element={user ? <ProfilePage /> : <Navigate to="../auth" />}
+						/>
 					</Routes>
 				</AppWrapper>
 			</MantineProvider>

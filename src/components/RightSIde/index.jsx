@@ -1,6 +1,7 @@
 import { UilSetting } from '@iconscout/react-unicons';
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Comment from '@/assets/comment.png';
 import Home from '@/assets/home.png';
@@ -16,7 +17,9 @@ function RightSide() {
 	return (
 		<RightSideWrapper>
 			<NavIcons>
-				<Icon src={Home} alt="home" />
+				<Link to="../home">
+					<Icon src={Home} alt="home" />
+				</Link>
 				<UilSetting />
 				<Icon src={Notifications} alt="home" />
 				<Icon src={Comment} alt="home" />
